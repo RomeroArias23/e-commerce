@@ -1,39 +1,36 @@
-// components/RegisterForm.js
+// components/LoginForm.js
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import bcrypt from 'bcryptjs';
 
-function RegisterForm() {
+function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
 
-  const handleRegister = async () => {
-    // Hash and salt the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Here you can send a POST request to your backend to register the user
+  const handleLogin = () => {
+    // Here you can send a POST request to your backend to authenticate the user
     // For example:
-    // fetch('/api/register', {
+    // fetch('/api/login', {
     //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json'
     //   },
-    //   body: JSON.stringify({ username, password: hashedPassword })
+    //   body: JSON.stringify({ username, password })
     // }).then(response => {
     //   if (response.ok) {
-    //     history.push('/login');
+    //     // Redirect to dashboard or another page after successful login
+    //     history.push('/dashboard');
     //   }
     // });
 
-    // Redirect to login page after successful registration
-    history.push('/login');
+    // For now, just redirect to dashboard for demonstration
+    history.push('/dashboard');
   };
 
   return (
     <div>
-      <h2>Register</h2>
-      <form onSubmit={handleRegister}>
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
         <div>
           <label htmlFor="username">Username:</label>
           <input
@@ -54,13 +51,12 @@ function RegisterForm() {
             required
           />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
       </form>
-      <p>Already have an account? <a href="/login">Login here</a>.</p>
+      <p>Don't have an account? <a href="/register">Register here</a>.</p>
+      {/* Add buttons for third-party login services */}
     </div>
   );
 }
 
-export default RegisterForm;
-
-
+export default LoginForm;
