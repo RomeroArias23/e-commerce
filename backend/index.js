@@ -1,5 +1,6 @@
 const express = require('express');
 const pool = require('./db');
+const bcrypt = require('bcryptjs');
 
 const app = express();
 const port = 3000; // You can use any available port
@@ -55,6 +56,26 @@ app.use(
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Define registration endpoint
+app.post('/register', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Hash and salt the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Save the user to the database (you'll need to implement this)
+    // For example:
+    // const newUser = await pool.query('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *', [username, hashedPassword]);
+
+    // Respond with success message
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.error('Error registering user', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 // Use route modules
 app.use('/auth', authRoutes);
